@@ -101,8 +101,6 @@ ApplicationWindow {
                     anchors.right: sentByMe ? parent.right : undefined
                 }
             }
-
-            ScrollBar.vertical: ScrollBar {}
         }
 
         Pane {
