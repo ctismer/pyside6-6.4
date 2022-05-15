@@ -54,7 +54,7 @@ ApplicationWindow {
     }
 
     ColumnLayout {
-        anchors.fill: window
+        anchors.fill: parent
 
         ListView {
             id: listView
