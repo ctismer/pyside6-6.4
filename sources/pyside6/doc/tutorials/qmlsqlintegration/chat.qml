@@ -101,6 +101,8 @@ ApplicationWindow {
                     anchors.right: sentByMe ? parent.right : undefined
                 }
             }
+            
+            
         }
 
         Pane {
