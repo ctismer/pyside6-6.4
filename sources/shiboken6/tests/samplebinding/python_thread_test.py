@@ -66,6 +66,7 @@ class Consumer(threading.Thread):
                 logging.debug('CONSUMER - empty bucket')
             time.sleep(0.01)
 
+
 class ProducerConsumer(unittest.TestCase):
     '''Basic test case for producer-consumer QThread'''
 
@@ -91,8 +92,9 @@ class ProducerConsumer(unittest.TestCase):
         self.assertEqual(prod.production_list, cons.consumption_list)
 
 
-
-
-
 if __name__ == '__main__':
+    # PYSIDE-2221: Temporary hack for debugging
+    for idx in range(99999):
+        print(idx)
+        ProducerConsumer().testProdCon()
     unittest.main()

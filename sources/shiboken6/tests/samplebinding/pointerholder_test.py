@@ -32,7 +32,8 @@ class TestPointerHolder(unittest.TestCase):
         refcnt = sys.getrefcount(a)
         ph = PointerHolder(a)
         ptr = ph.pointer()
-        self.assertEqual(sys.getrefcount(a), refcnt + 1)
+        # PYSIDE-2221: NoGIL makes `a` immutable, reporting 999
+        self.assertEqual(sys.getrefcount(a), refcnt + 1 if refcnt != 999 else refcnt)
 
 if __name__ == '__main__':
     unittest.main()

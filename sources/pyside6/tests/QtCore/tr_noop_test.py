@@ -30,35 +30,36 @@ class QtTrNoopTest(unittest.TestCase):
         refcnt = sys.getrefcount(self.txt)
         result = QT_TR_NOOP(self.txt)
         self.assertEqual(result, self.txt)
-        self.assertEqual(sys.getrefcount(result), refcnt + 1)
+        # PYSIDE-2221: NoGIL makes `result` immutable, reporting 999
+        self.assertEqual(sys.getrefcount(result), refcnt + 1 if refcnt != 999 else refcnt)
 
     @unittest.skipUnless(hasattr(sys, "getrefcount"), f"{sys.implementation.name} has no refcount")
     def testQtTrNoopUtf8(self):
         refcnt = sys.getrefcount(self.txt)
         result = QT_TR_NOOP_UTF8(self.txt)
         self.assertEqual(result, self.txt)
-        self.assertEqual(sys.getrefcount(result), refcnt + 1)
+        self.assertEqual(sys.getrefcount(result), refcnt + 1 if refcnt != 999 else refcnt)
 
     @unittest.skipUnless(hasattr(sys, "getrefcount"), f"{sys.implementation.name} has no refcount")
     def testQtTranslateNoop(self):
         refcnt = sys.getrefcount(self.txt)
         result = QT_TRANSLATE_NOOP(None, self.txt)
         self.assertEqual(result, self.txt)
-        self.assertEqual(sys.getrefcount(result), refcnt + 1)
+        self.assertEqual(sys.getrefcount(result), refcnt + 1 if refcnt != 999 else refcnt)
 
     @unittest.skipUnless(hasattr(sys, "getrefcount"), f"{sys.implementation.name} has no refcount")
     def testQtTranslateNoopUtf8(self):
         refcnt = sys.getrefcount(self.txt)
         result = QT_TRANSLATE_NOOP_UTF8(self.txt)
         self.assertEqual(result, self.txt)
-        self.assertEqual(sys.getrefcount(result), refcnt + 1)
+        self.assertEqual(sys.getrefcount(result), refcnt + 1 if refcnt != 999 else refcnt)
 
     @unittest.skipUnless(hasattr(sys, "getrefcount"), f"{sys.implementation.name} has no refcount")
     def testQtTranslateNoop3(self):
         refcnt = sys.getrefcount(self.txt)
         result = QT_TRANSLATE_NOOP3(None, self.txt, None)
         self.assertEqual(result, self.txt)
-        self.assertEqual(sys.getrefcount(result), refcnt + 1)
+        self.assertEqual(sys.getrefcount(result), refcnt + 1 if refcnt != 999 else refcnt)
 
 
 if __name__ == '__main__':

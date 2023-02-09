@@ -46,6 +46,9 @@ class QInstallMsgHandlerTest(unittest.TestCase):
         self.assertEqual(ret, None)
         refcount = sys.getrefcount(handleruseless)
         retNone = qInstallMessageHandler(handleruseless)
+        if hasattr(sys.flags, "nogil"):
+            # PYSIDE-2221: This is an immortal object
+            refcount -= 1
         self.assertEqual(sys.getrefcount(handleruseless), refcount + 1)
         rethandler = qInstallMessageHandler(None)
         self.assertEqual(rethandler, handleruseless)

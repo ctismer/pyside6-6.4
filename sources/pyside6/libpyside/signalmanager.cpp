@@ -656,6 +656,12 @@ int SignalManager::registerMetaMethodGetIndex(QObject *source, const char *signa
 
 const QMetaObject *SignalManager::retrieveMetaObject(PyObject *self)
 {
+#ifdef Py_NOGIL
+    // PYSIDE-2221: When we are working with nogil, it seems to be necessary
+    //              to hold the GIL. Maybe that is harmless here (check later).
+    // Thanks to Sam Gross who fixed most errors by pointing this out.
+    Shiboken::GilState gil;
+#endif
     // PYSIDE-803: Avoid the GIL in SignalManager::retrieveMetaObject
     // This function had the GIL. We do not use the GIL unless we have to.
     // metaBuilderFromDict accesses a Python dict, but in that context there

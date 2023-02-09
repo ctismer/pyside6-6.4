@@ -498,15 +498,35 @@ static bool feature_01_addLowerNames(PyTypeObject *type, PyObject *prev_dict, in
 //     Feature 0x02: Use true properties instead of getters and setters
 //
 
-// This is the Python 2 version for inspection of m_ml, only.
-// The actual Python 3 version is larget.
+#ifdef Py_NOGIL
 
+// PYSIDE-2221: Here are some unawaited changes.
+typedef struct {
+    PyObject_HEAD
+    const uint8_t *first_instr;  // can get PyCodeObject via offset
+} PyFuncBase;
+
+typedef struct {
+    PyFuncBase   m_base;
+    PyMethodDef *m_ml; /* Description of the C function to call */
+    PyObject    *m_self; /* Passed as 'self' arg to the C func, can be NULL */
+    PyObject    *m_module; /* The __module__ attribute, can be anything */
+    PyObject    *m_weakreflist; /* List of weak references */
+    vectorcallfunc vectorcall;
+} PyCFunctionObject;
+
+#else
+
+// This is the Python 2 version for inspection of m_ml, only.
+// The actual Python 3 version is larger.
 typedef struct {
     PyObject_HEAD
     PyMethodDef *m_ml; /* Description of the C function to call */
     PyObject    *m_self; /* Passed as 'self' arg to the C func, can be NULL */
     PyObject    *m_module; /* The __module__ attribute, can be anything */
 } PyCFunctionObject;
+
+#endif
 
 static PyObject *modifyStaticToClassMethod(PyTypeObject *type, PyObject *sm)
 {

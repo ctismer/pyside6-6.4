@@ -14,7 +14,7 @@ init_paths()
 from sample import ObjectType
 from sample import ObjectView
 from sample import ObjectModel
-
+from shiboken6.Shiboken import dump, disassembleFrame
 
 
 class ObjTest(unittest.TestCase):
@@ -86,5 +86,10 @@ class ObjTest(unittest.TestCase):
         self.assertFalse(alive())
 
 if __name__ == '__main__':
+    # PYSIDE-2221: Temporary hack for debugging
+    for idx in range(99999):
+        #disassembleFrame(42)
+        ObjTest().test_cyclic_dependency_withParent()
+        #ObjTest().test_cyclic_dependency_withKeepRef()
     unittest.main()
 
